@@ -25,6 +25,18 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['roles'])) {
     header("Location: manage_users.php?success=1");
     exit();
 }
+
+// Handle user deletion
+if (isset($_GET['delete_id'])) {
+    $userIdToDelete = $_GET['delete_id'];
+    $deleteQuery = "DELETE FROM users WHERE id = ?";
+    $stmt = $conn->prepare($deleteQuery);
+    $stmt->bind_param("i", $userIdToDelete);
+    $stmt->execute();
+
+    header("Location: manage_users.php?deleted=1");
+    exit();
+}
 ?>
 
 <!DOCTYPE html>
@@ -36,6 +48,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['roles'])) {
     <title>Manage Users - Admin Dashboard</title>
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Sharp" rel="stylesheet">
     <link rel="stylesheet" href="../assets/css/style.css">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script> <!-- Include SweetAlert -->
 </head>
 <body>
     <div class="container">
@@ -80,6 +93,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['roles'])) {
                                 <th>ID</th>
                                 <th>Username</th>
                                 <th>Role</th>
+                                <th>Actions</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -93,6 +107,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['roles'])) {
                                             <option value="client" <?php if ($row['role'] == 'client') echo 'selected'; ?>>Client</option>
                                             <option value="user" <?php if ($row['role'] == 'user') echo 'selected'; ?>>User</option>
                                         </select>
+                                    </td>
+                                    <td>
+                                        <a href="#" class="delete-user" data-id="<?= $row['id'] ?>">
+                                            <span class="material-icons-sharp">delete</span>
+                                        </a>
                                     </td>
                                 </tr>
                             <?php endwhile; ?>
@@ -162,6 +181,30 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['roles'])) {
         saveButton.addEventListener("click", function(event) {
             event.preventDefault();  // Prevent default anchor behavior
             document.getElementById("role-form").submit();  // Submit the form
+        });
+
+        // Delete user functionality with SweetAlert
+        document.querySelectorAll('.delete-user').forEach(button => {
+            button.addEventListener('click', function(event) {
+                event.preventDefault();  // Prevent default action
+
+                const userId = this.getAttribute('data-id');  // Get the user ID from the data-id attribute
+
+                Swal.fire({
+                    title: 'Are you sure?',
+                    text: 'This action will permanently delete the user!',
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonText: 'Yes, delete it!',
+                    cancelButtonText: 'Cancel',
+                    reverseButtons: true
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        // Redirect to the same page with delete action
+                        window.location.href = `manage_users.php?delete_id=${userId}`;
+                    }
+                });
+            });
         });
     </script>
 </body>

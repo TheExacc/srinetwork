@@ -1,6 +1,6 @@
 <?php
 // Redirect to the login page after 3 seconds
-header("refresh:3; url=auth/login.php");
+header("refresh:2; url=auth/login.php");
 ?>
 
 <!DOCTYPE html>
@@ -28,7 +28,7 @@ header("refresh:3; url=auth/login.php");
 .login-container {
     width: 100%;
     max-width: 400px;
-    margin: 0 auto;
+    margin: 233.7px auto;
     padding: var(--padding-2);
     background-color: var(--color-white);
     border-radius: var(--border-radius-2);
@@ -53,6 +53,7 @@ header("refresh:3; url=auth/login.php");
 }
 
 .login-btn {
+    margin:22px;
     padding: 1rem 2rem;
     background-color: var(--color-primary);
     color: var(--color-white);
