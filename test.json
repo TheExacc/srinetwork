@@ -1,0 +1,14 @@
+{
+  "title": "Sample Post Title SRI",
+  "content": "Sample post content.",
+  "questions": [
+    {
+      "question_text": "What is 2 + 2?",
+      "question_type": "single-select",
+      "options": ["1", "2", "3", "4"],
+      "correct_answer": "4"
+    }
+  ],
+  "users": ["user2@example.com", "user3@example.com"]
+}
+
