@@ -18,6 +18,7 @@ session_start();
             <?php if (isset($_SESSION['role'])): ?>
                 <?php if ($_SESSION['role'] == 'admin'): ?>
                     <li><a href="admindashboard.php">Admin Dashboard</a></li>
+                    <li><a href="user_roles.php">User Roles</a></li> <!-- New Section for Admin -->
                 <?php elseif ($_SESSION['role'] == 'client'): ?>
                     <li><a href="clientdashboard.php">Client Dashboard</a></li>
                 <?php elseif ($_SESSION['role'] == 'user'): ?>
